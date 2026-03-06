@@ -20,7 +20,6 @@ const About = () => {
                 <div className="about-content">
                     <div className="about-profile-section">
                         <div className="profile-image-container">
-                            <img src={profileImg} alt="Developer Profile" className="profile-img" />
                             <div className="profile-glow"></div>
                         </div>
                     </div>
