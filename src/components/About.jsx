@@ -1,12 +1,15 @@
 import { Code, Database, Layout, Smartphone } from 'lucide-react';
+import profileImg from '../assets/images/profile.png';
+import reactLogo from '../assets/images/react-logo.png';
+import nodeLogo from '../assets/images/node-logo.png';
 import './About.css';
 
 const About = () => {
     const skills = [
-        { name: 'Frontend Development', icon: <Layout size={24} />, desc: 'React, Vue, Next.js, Solid.js' },
-        { name: 'Backend Systems', icon: <Database size={24} />, desc: 'Node.js, Python, PostgreSQL, Redis' },
-        { name: 'API Design', icon: <Code size={24} />, desc: 'RESTful APIs, GraphQL, gRPC' },
-        { name: 'Responsive UI', icon: <Smartphone size={24} />, desc: 'Mobile-first, CSS Architecture' },
+        { name: 'React Ecology', icon: <img src={reactLogo} alt="React" className="skill-img" />, desc: 'React, Next.js, Vite, Solid.js architecture.' },
+        { name: 'Node Backend', icon: <img src={nodeLogo} alt="Node.js" className="skill-img" />, desc: 'Express, Fastify, Microservices, and APIs.' },
+        { name: 'Database Systems', icon: <Database size={24} />, desc: 'PostgreSQL, Redis, MongoDB, ORMs.' },
+        { name: 'Responsive UI', icon: <Smartphone size={24} />, desc: 'Mobile-first, CSS Architecture, Tailwind.' },
     ];
 
     return (
@@ -15,6 +18,12 @@ const About = () => {
                 <h2 className="heading-md">About <span className="text-gradient">Me</span></h2>
 
                 <div className="about-content">
+                    <div className="about-profile-section">
+                        <div className="profile-image-container">
+                            <img src={profileImg} alt="Developer Profile" className="profile-img" />
+                            <div className="profile-glow"></div>
+                        </div>
+                    </div>
                     <div className="about-text glass-panel">
                         <p className="text-muted">
                             I am a passionate software engineer with a strong foundation in modern web technologies.

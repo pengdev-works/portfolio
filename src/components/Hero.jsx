@@ -11,10 +11,6 @@ const Hero = () => {
 
             <div className="container hero-content">
                 <div className="hero-text-wrapper reveal">
-                    <div className="hero-badge animate-float">
-                        <Sparkles size={16} className="badge-icon" />
-                        <span>Available for new opportunities</span>
-                    </div>
 
                     <h1 className="heading-xl">
                         Designing code, <br />
