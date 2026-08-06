@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Sun, Moon } from 'lucide-react';
+import profileImg from '../assets/images/profile.jpg';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ theme, toggleTheme }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -24,9 +25,12 @@ const Navbar = () => {
     return (
         <nav className={`navbar ${isScrolled ? 'scrolled glass-panel' : ''}`}>
             <div className="container nav-content">
-                <div className="logo">
+                <a href="#home" className="logo">
+                    <div className="logo-avatar-wrapper">
+                        <img src={profileImg} alt="Avatar" className="nav-avatar" />
+                    </div>
                     <span className="text-gradient">Portfolio</span>
-                </div>
+                </a>
 
                 {/* Desktop Nav */}
                 <div className="nav-links desktop-only">
@@ -35,35 +39,57 @@ const Navbar = () => {
                             {link.name}
                         </a>
                     ))}
+                    <button
+                        className="theme-toggle-btn"
+                        onClick={toggleTheme}
+                        aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                    >
+                        {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                    </button>
                     <div className="nav-socials">
-                        <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={20} /></a>
+                        <a href="https://github.com/pengdev-works" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={20} /></a>
                         <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={20} /></a>
                     </div>
                 </div>
 
-                {/* Mobile Toggle */}
-                <button
-                    className="mobile-toggle mobile-only"
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    aria-label="Toggle menu"
-                >
-                    {mobileMenuOpen ? <X size={24} color="var(--text-primary)" /> : <Menu size={24} color="var(--text-primary)" />}
-                </button>
+                {/* Mobile Toggle & Theme Button */}
+                <div className="mobile-actions mobile-only">
+                    <button
+                        className="theme-toggle-btn"
+                        onClick={toggleTheme}
+                        aria-label="Toggle theme"
+                    >
+                        {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                    </button>
+                    <button
+                        className="mobile-toggle"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        {mobileMenuOpen ? <X size={24} color="var(--text-primary)" /> : <Menu size={24} color="var(--text-primary)" />}
+                    </button>
+                </div>
             </div>
 
-            {/* Mobile Nav */}
+            {/* Mobile Dropdown Drawer */}
             {mobileMenuOpen && (
                 <div className="mobile-menu glass-panel animate-fade-in">
-                    {navLinks.map((link) => (
-                        <a
-                            key={link.name}
-                            href={link.href}
-                            className="mobile-nav-item"
-                            onClick={() => setMobileMenuOpen(false)}
-                        >
-                            {link.name}
-                        </a>
-                    ))}
+                    <div className="mobile-menu-links">
+                        {navLinks.map((link) => (
+                            <a
+                                key={link.name}
+                                href={link.href}
+                                className="mobile-nav-item"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                {link.name}
+                            </a>
+                        ))}
+                    </div>
+                    <div className="mobile-menu-socials">
+                        <a href="https://github.com/pengdev-works" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={18} /> GitHub</a>
+                        <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={18} /> LinkedIn</a>
+                    </div>
                 </div>
             )}
         </nav>

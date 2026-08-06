@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
-:root {
-  /* Colors */
+:root,
+[data-theme="dark"] {
+  /* Dark Mode Colors */
   --bg-primary: #050505;
-  --bg-secondary: #0a0a0a;
+  --bg-secondary: #0d0e12;
   --text-primary: #ffffff;
   --text-secondary: #a1a1aa;
 
@@ -11,6 +12,7 @@
   --accent-blue: #3b82f6;
   --accent-purple: #8b5cf6;
   --accent-pink: #ec4899;
+  --accent-color: #3b82f6;
 
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
@@ -21,9 +23,14 @@
   --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
 
-  /* Glassmorphism */
-  --glass-bg: rgba(20, 20, 20, 0.4);
-  --glass-border: rgba(255, 255, 255, 0.05);
+  /* Glassmorphism & Inputs */
+  --glass-bg: rgba(20, 20, 25, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --input-focus-bg: rgba(255, 255, 255, 0.08);
+
+  --grid-line: rgba(255, 255, 255, 0.04);
+  --radial-glow: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -34,7 +41,7 @@
   line-height: 1.6;
   font-weight: 400;
 
-  color-scheme: dark light;
+  color-scheme: dark;
   color: var(--text-primary);
   background-color: var(--bg-primary);
 
@@ -42,6 +49,42 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="light"] {
+  /* Light Mode Colors */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+
+  /* Richer Accents */
+  --accent-blue: #2563eb;
+  --accent-purple: #7c3aed;
+  --accent-pink: #db2777;
+  --accent-color: #2563eb;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  --gradient-secondary: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+
+  /* Shadows and Glows */
+  --accent-glow: rgba(124, 58, 237, 0.2);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 30px -10px rgba(0, 0, 0, 0.12);
+
+  /* Glassmorphism & Inputs */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --input-bg: rgba(0, 0, 0, 0.03);
+  --input-focus-bg: rgba(0, 0, 0, 0.06);
+
+  --grid-line: rgba(0, 0, 0, 0.05);
+  --radial-glow: radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 50%);
+
+  color-scheme: light;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
 }
 
 * {
@@ -101,10 +144,11 @@ button {
   height: 100vh;
   background-size: 50px 50px;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   z-index: -2;
   pointer-events: none;
+  transition: background-image var(--transition-normal);
 }
 
 .bg-radial-gradient {
@@ -113,9 +157,10 @@ button {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+  background: var(--radial-glow);
   z-index: -1;
   pointer-events: none;
+  transition: background var(--transition-normal);
 }
 
 /* Utilities */

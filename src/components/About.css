@@ -20,27 +20,60 @@
     position: relative;
     width: 100%;
     max-width: 350px;
-    aspect-ratio: 1/1;
-    border-radius: 30px;
+    height: 420px;
+    border-radius: 28px;
     padding: 4px;
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
     z-index: 2;
-    transform: perspective(1000px) rotateY(5deg);
-    transition: transform var(--transition-normal);
+    transform: perspective(1000px) rotateY(4deg);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
 }
 
 .profile-image-container:hover {
     transform: perspective(1000px) rotateY(0deg) scale(1.02);
+    box-shadow: 0 20px 45px rgba(139, 92, 246, 0.3);
 }
 
 .profile-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 26px;
+    object-position: center 10%;
+    border-radius: 24px;
     background-color: var(--bg-secondary);
     position: relative;
     z-index: 2;
+    filter: contrast(1.02);
+}
+
+.profile-badge-overlay {
+    position: absolute;
+    bottom: -15px;
+    right: -15px;
+    padding: 0.6rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 999px;
+    z-index: 10;
+    background: rgba(15, 15, 20, 0.85);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+}
+
+.profile-badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--accent-blue);
+    box-shadow: 0 0 8px var(--accent-blue);
+}
+
+.profile-badge-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e4e4e7;
 }
 
 .profile-glow {
@@ -70,11 +103,22 @@
 .about-text {
     grid-area: text;
     padding: 3rem;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     line-height: 1.8;
     position: relative;
     overflow: hidden;
-    border-radius: 20px;
+    border-radius: 24px;
+}
+
+.about-subtitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.mt-3 {
+    margin-top: 1rem;
 }
 
 .about-text::before {
@@ -86,7 +130,7 @@
     bottom: 0;
     border-radius: 20px;
     padding: 2px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    background: linear-gradient(135deg, var(--glass-border), transparent);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -113,7 +157,8 @@
     gap: 1.25rem;
     position: relative;
     border-radius: 20px;
-    background: linear-gradient(145deg, rgba(20, 20, 20, 0.6), rgba(10, 10, 10, 0.8));
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     overflow: hidden;
     align-items: center;
     text-align: center;
@@ -153,9 +198,9 @@
     align-items: center;
     justify-content: center;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--glass-bg);
     color: var(--accent-blue);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
     transition: all var(--transition-fast);
     padding: 10px;
 }

@@ -1,4 +1,5 @@
-import { ArrowRight, Sparkles, Monitor, Figma } from 'lucide-react';
+import { ArrowRight, Sparkles, Monitor, Figma, Code } from 'lucide-react';
+import profileImg from '../assets/images/profile.jpg';
 import './Hero.css';
 
 const Hero = () => {
@@ -11,6 +12,8 @@ const Hero = () => {
 
             <div className="container hero-content">
                 <div className="hero-text-wrapper reveal">
+                    <div className="hero-badge">
+                    </div>
 
                     <h1 className="heading-xl">
                         Designing code, <br />
@@ -33,15 +36,14 @@ const Hero = () => {
                     </div>
                 </div>
 
-                {/* Floating Abstract Elements */}
-                <div className="hero-visuals mobile-hidden">
-                    <div className="glass-panel floating-card card-1 animate-float" style={{ animationDelay: '0s' }}>
-                        <Monitor size={32} color="var(--accent-blue)" />
-                        <span>Clean Architecture</span>
-                    </div>
-                    <div className="glass-panel floating-card card-2 animate-float" style={{ animationDelay: '2s' }}>
-                        <Figma size={32} color="var(--accent-pink)" />
-                        <span>Pixel Perfect UI</span>
+                {/* Hero Profile Visual Card */}
+                <div className="hero-visuals mobile-hidden reveal reveal-delay-2">
+                    <div className="hero-portrait-card">
+                        <div className="portrait-glow"></div>
+                        <div className="portrait-image-wrapper">
+                            <img src={profileImg} alt="Developer Portrait" className="hero-portrait-img" />
+                            <div className="portrait-overlay"></div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import { Code, Database, Layout, Smartphone } from 'lucide-react';
-import profileImg from '../assets/images/profile.png';
+import profileImg from '../assets/images/profile.jpg';
 import reactLogo from '../assets/images/react-logo.png';
 import nodeLogo from '../assets/images/node-logo.png';
 import './About.css';
@@ -21,16 +21,18 @@ const About = () => {
                     <div className="about-profile-section">
                         <div className="profile-image-container">
                             <div className="profile-glow"></div>
+                            <img src={profileImg} alt="Developer Profile" className="profile-img" />
                         </div>
                     </div>
                     <div className="about-text glass-panel">
-                        <p className="text-muted">
-                            I am a passionate software engineer with a strong foundation in modern web technologies.
-                            My journey in tech is driven by a desire to build intuitive, scalable, and visually stunning applications.
+                        <h3 className="about-subtitle">Driven by Passion, Engineered for Excellence</h3>
+                        <p className="text-muted mt-3">
+                            I am a software engineer dedicated to building sleek, responsive, and high-performance digital experiences.
+                            With expertise across the full stack, I turn complex ideas into refined, user-centric web applications.
                         </p>
                         <p className="text-muted mt-4">
-                            When I'm not coding, you can find me exploring new design trends, contributing to open source,
-                            or optimizing performance metrics for fun.
+                            Whether architecting scalable backend APIs or crafting pixel-perfect, interactive frontends,
+                            I continuously strive for code elegance, speed, and modern visual design.
                         </p>
                     </div>
 

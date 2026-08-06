@@ -24,7 +24,7 @@ const Footer = () => {
                     <div className="footer-links-group">
                         <h4 className="footer-title">Socials</h4>
                         <div className="footer-socials">
-                            <a href="#" aria-label="GitHub"><Github size={20} /></a>
+                            <a href="https://github.com/pengdev-works" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={20} /></a>
                             <a href="#" aria-label="LinkedIn"><Linkedin size={20} /></a>
                             <a href="#" aria-label="Twitter"><Twitter size={20} /></a>
                         </div>
@@ -34,7 +34,7 @@ const Footer = () => {
 
             <div className="footer-bottom">
                 <p className="text-muted">
-                    &copy; {new Date().getFullYear()} Your Name. All rights reserved. Built with React & Vite.
+                    &copy; {new Date().getFullYear()} Jhon Christopher Paragas. All rights reserved. Built with React & Vite.
                 </p>
             </div>
         </footer>
