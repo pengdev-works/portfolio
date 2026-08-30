@@ -2,12 +2,53 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2300E5FF'/></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>portfolio</title>
+    <title>Peng — AETHER Constellation Portfolio & Staff Design Engineer</title>
+    <meta name="description" content="AETHER — a generative constellation portfolio for Peng (pengzzz). Staff Design Engineer & Full-Stack Architect building immersive WebGL and fintech platforms under a Shanghai sky." />
+
+    <!-- Google Fonts: Fraunces (italic display), Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,300;1,9..144,400;1,9..144,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Accessibility Skip Link -->
+    <a href="#main-content" className="skip-link" tabIndex="0">Skip to content</a>
+
+    <div id="root">
+      <!-- Semantic Static HTML Pre-render Fallback for JS-disabled clients -->
+      <header className="static-header">
+        <div className="static-logo">
+          <span className="blue-dot"></span>
+          <strong>Portfolio</strong>
+        </div>
+        <nav className="static-nav">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
+
+      <main id="main-content">
+        <section id="home">
+          <div className="eyebrow">✦ observing from Shanghai · 31.23°N · remote</div>
+          <h1>Designing code, engineering experiences.</h1>
+          <p>
+            I craft immersive, high-performance web applications that merge striking aesthetics with robust, scalable architecture. Built for the modern web.
+          </p>
+          <div>
+            <a href="#projects">Explore Work →</a>
+            <a href="#contact">Make Contact</a>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>© 2026 Peng · Built under a Shanghai sky · All rights reserved.</p>
+      </footer>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

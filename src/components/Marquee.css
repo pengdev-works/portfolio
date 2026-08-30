@@ -1,0 +1,26 @@
+.marquee-strip {
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  position: relative;
+  user-select: none;
+}
+
+.marquee-tag {
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  padding: 0 16px;
+  opacity: 0.7;
+}
+
+.marquee-middot {
+  font-size: 14px;
+  color: var(--accent-b);
+  opacity: 0.5;
+}

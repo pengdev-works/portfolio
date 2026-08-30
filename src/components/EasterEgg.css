@@ -1,0 +1,51 @@
+.penguin-easter-egg-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.penguin-trail-svg {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.trail-line-anim {
+  stroke-dashoffset: 200;
+  animation: draw-penguin-trail 2.4s linear forwards;
+}
+
+@keyframes draw-penguin-trail {
+  from { stroke-dashoffset: 200; }
+  to { stroke-dashoffset: 0; opacity: 0; }
+}
+
+.flying-penguin {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  animation: fly-to-singularity 2.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes fly-to-singularity {
+  0% {
+    left: 0vw;
+    top: 100vh;
+    transform: scale(1) rotate(-15deg);
+    opacity: 1;
+  }
+  90% {
+    left: 60vw;
+    top: 40vh;
+    transform: scale(0.8) rotate(15deg);
+    opacity: 1;
+  }
+  100% {
+    left: 60vw;
+    top: 40vh;
+    transform: scale(0) rotate(180deg);
+    opacity: 0;
+  }
+}

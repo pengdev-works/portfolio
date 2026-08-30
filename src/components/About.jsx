@@ -1,54 +1,101 @@
-import { Code, Database, Layout, Smartphone } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
 import profileImg from '../assets/images/profile.jpg';
-import reactLogo from '../assets/images/react-logo.png';
-import nodeLogo from '../assets/images/node-logo.png';
 import './About.css';
 
 const About = () => {
-    const skills = [
-        { name: 'React Ecology', icon: <img src={reactLogo} alt="React" className="skill-img" />, desc: 'React, Next.js, Vite, Solid.js architecture.' },
-        { name: 'Node Backend', icon: <img src={nodeLogo} alt="Node.js" className="skill-img" />, desc: 'Express, Fastify, Microservices, and APIs.' },
-        { name: 'Database Systems', icon: <Database size={24} />, desc: 'PostgreSQL, Redis, MongoDB, ORMs.' },
-        { name: 'Responsive UI', icon: <Smartphone size={24} />, desc: 'Mobile-first, CSS Architecture, Tailwind.' },
-    ];
+  const sectionRef = useRef(null);
 
-    return (
-        <section id="about" className="section-padding">
-            <div className="container">
-                <h2 className="heading-md">About <span className="text-gradient">Me</span></h2>
-
-                <div className="about-content">
-                    <div className="about-profile-section">
-                        <div className="profile-image-container">
-                            <div className="profile-glow"></div>
-                            <img src={profileImg} alt="Developer Profile" className="profile-img" />
-                        </div>
-                    </div>
-                    <div className="about-text glass-panel">
-                        <h3 className="about-subtitle">Driven by Passion, Engineered for Excellence</h3>
-                        <p className="text-muted mt-3">
-                            I am a software engineer dedicated to building sleek, responsive, and high-performance digital experiences.
-                            With expertise across the full stack, I turn complex ideas into refined, user-centric web applications.
-                        </p>
-                        <p className="text-muted mt-4">
-                            Whether architecting scalable backend APIs or crafting pixel-perfect, interactive frontends,
-                            I continuously strive for code elegance, speed, and modern visual design.
-                        </p>
-                    </div>
-
-                    <div className="skills-grid">
-                        {skills.map((skill) => (
-                            <div key={skill.name} className="skill-card glass-panel">
-                                <div className="skill-icon">{skill.icon}</div>
-                                <h3 className="skill-title">{skill.name}</h3>
-                                <p className="skill-desc text-muted">{skill.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll('.reveal').forEach((el, i) => {
+              setTimeout(() => el.classList.add('active'), i * 130);
+            });
+          }
+        });
+      },
+      { threshold: 0.1 }
     );
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section id="about" className="section-padding about-section" ref={sectionRef}>
+      <div className="container">
+        {/* Section Header */}
+        <div className="about-header">
+          <span className="section-eyebrow reveal">✦ Spectral Identity</span>
+          <h2 className="section-title reveal reveal-delay-1">About the Engineer</h2>
+        </div>
+
+        {/* Two-column layout */}
+        <div className="about-grid">
+          {/* Left: Portrait with animated glow ring + float */}
+          <div className="about-portrait-col reveal reveal-delay-2">
+            <div className="portrait-frame">
+              <img
+                src={profileImg}
+                alt="Jhon Christopher Paragas — Full-Stack Engineer"
+                className="portrait-img"
+              />
+              {/* Animated aurora ring */}
+              <div className="rotating-aurora-ring" aria-hidden="true" />
+              {/* Glow halo behind portrait */}
+              <div className="portrait-glow" aria-hidden="true" />
+            </div>
+
+            {/* Availability badge below portrait */}
+            <div className="portrait-availability font-mono">
+              <span className="avail-dot" aria-hidden="true" />
+              <span>Open to remote contracts</span>
+            </div>
+          </div>
+
+          {/* Right: Bio text */}
+          <div className="about-text-col glass-panel reveal reveal-delay-3">
+            <p className="about-paragraph">
+              I'm <strong>Jhon Christopher Paragas</strong>, a Full-Stack Engineer
+              and Design-Engineer hybrid with a passion for building high-performance web
+              applications that merge precision engineering with striking visual identity.
+            </p>
+
+            <p className="about-paragraph text-muted">
+              My craft sits at the intersection of production-grade software architecture and
+              modern frontend design. From government enterprise portals like AbraVenture to
+              custom interactive web experiences, I bridge design systems directly into clean,
+              scalable TypeScript code.
+            </p>
+
+            <p className="about-paragraph text-muted">
+              I'm currently open to select full-stack or lead design-engineering engagements
+              with teams that prioritize clean systems design, bold digital storytelling, and
+              exceptional user experience.
+            </p>
+
+            {/* Quick stats */}
+            <div className="about-quick-stats">
+              <div className="stat-item">
+                <span className="stat-value font-mono gradient-text-aurora">React</span>
+                <span className="stat-label font-mono">Primary Stack</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value font-mono gradient-text-plasma">Node.js</span>
+                <span className="stat-label font-mono">Backend</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value font-mono gradient-text-ember">Remote</span>
+                <span className="stat-label font-mono">Work Mode</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default About;

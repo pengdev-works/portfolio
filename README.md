@@ -1,16 +1,37 @@
-# React + Vite
+# AETHER — Generative Constellation Portfolio for Peng ("pengzzz")
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A single-page, scroll-driven, WebGL-native night-sky observatory portfolio designed for Peng (pengzzz), tailored for technical recruiters, hiring managers, and design-engineering leads at fintech and Web3 startups.
 
-Currently, two official plugins are available:
+## 🚀 Run & Build Instructions
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+# Install dependencies
+npm install
 
-## React Compiler
+# Start development server
+npm run dev
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Execute production build
+npm run build
 
-## Expanding the ESLint configuration
+# Preview production build locally
+npm run preview
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📝 Customization & Swap Guide
+
+- **Where to Swap Copy**:
+  - Hero Star-Headline & Subtext: Edit [`src/components/Hero.jsx`](file:///c:/Users/abero/OneDrive/Documents/portfolio/src/components/Hero.jsx)
+  - About Bio & Spectral Identity: Edit [`src/components/About.jsx`](file:///c:/Users/abero/OneDrive/Documents/portfolio/src/components/About.jsx)
+  - Live Status ("Now"): Edit [`src/components/Now.jsx`](file:///c:/Users/abero/OneDrive/Documents/portfolio/src/components/Now.jsx)
+  - Selected Constellations: Edit `secondaryConstellations` & `abraScreens` in [`src/components/Projects.jsx`](file:///c:/Users/abero/OneDrive/Documents/portfolio/src/components/Projects.jsx)
+
+- **Where to Drop Project Thumbnails**:
+  - Place 16:10 aspect ratio images (WebP/PNG) into `public/projects/`.
+  - In `src/components/Projects.jsx`, replace `previewSvg` with `<img src="/projects/thumb.webp" alt="Title" className="constellation-svg-preview" />`.
+
+- **How to Swap Starfield for a Static Hero Image**:
+  - In `src/App.jsx`, replace `<AetherField />` with `<div className="static-hero-bg"><img src="/sky.jpg" alt="Night Sky" /></div>`.
+
+- **Easter Egg**:
+  - Type `p-e-n-g` anywhere on the page to spawn a cyan SVG penguin flying to the black-hole singularity with a dashed aurora-cyan trail.
