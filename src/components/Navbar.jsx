@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Sun, Moon } from 'lucide-react';
 import profileImg from '../assets/images/profile.jpg';
 
 const navLinks = [
@@ -13,7 +13,7 @@ const navLinks = [
   { name: 'Contact', href: '#contact' },
 ];
 
-export default function Navbar({ activeSection }) {
+export default function Navbar({ activeSection, theme, toggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -48,7 +48,7 @@ export default function Navbar({ activeSection }) {
               />
             </div>
             <span className="text-base font-bold tracking-tight text-white group-hover:text-emerald-400 transition-colors">
-              Jhon Christopher<span className="text-emerald-400 font-mono">.dev</span>
+              Jhon Christopher<span className="text-emerald-400 font-mono"></span>
             </span>
           </a>
 
@@ -72,8 +72,23 @@ export default function Navbar({ activeSection }) {
             })}
           </nav>
 
-          {/* Desktop CTA Button */}
-          <div className="hidden md:flex items-center">
+          {/* Desktop Actions (Theme Toggle + CTA) */}
+          <div className="hidden md:flex items-center gap-3">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-amber-400 border border-white/10 transition-colors"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-amber-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-slate-700" />
+              )}
+            </button>
+
+            {/* CTA Button */}
             <a
               href="#contact"
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:border-emerald-400 text-sm font-semibold transition-all shadow-sm hover:shadow-emerald-500/20"
@@ -83,8 +98,20 @@ export default function Navbar({ activeSection }) {
             </a>
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <div className="flex md:hidden">
+          {/* Mobile Actions */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg bg-white/5 text-slate-300 border border-white/10 focus:outline-none"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-amber-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-slate-700" />
+              )}
+            </button>
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg bg-white/5 text-slate-300 hover:text-white border border-white/10 focus:outline-none"
@@ -117,6 +144,7 @@ export default function Navbar({ activeSection }) {
                   {link.name}
                 </a>
               ))}
+
               <a
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}

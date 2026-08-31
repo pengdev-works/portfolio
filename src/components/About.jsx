@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Code, Terminal, Layers, Zap, MapPin, Mail, ShieldCheck } from 'lucide-react';
+import { Code, Terminal, Layers, Zap, MapPin, FolderGit2, Cpu, Calendar, Network } from 'lucide-react';
 import profileImg from '../assets/images/profile.jpg';
 
 // ─── Animated Counter ────────────────────────────────────────────────────────
@@ -30,12 +30,36 @@ function AnimatedCounter({ target, suffix = '', duration = 1600 }) {
   );
 }
 
-// ─── Stats ───────────────────────────────────────────────────────────────────
+// ─── Stats Aligned with Portfolio Journey ─────────────────────────────────────
 const stats = [
-  { label: 'Projects Built', value: 10, suffix: '+', subtext: 'Web & Full-Stack Systems' },
-  { label: 'Technologies', value: 15, suffix: '+', subtext: 'Frontend, Backend, DB & Tools' },
-  { label: 'Years Learning', value: 3, suffix: '+', subtext: 'Continuous Engineering' },
-  { label: 'Systems Designed', value: 5, suffix: '+', subtext: 'Database & Architecture' },
+  { 
+    label: 'Projects & Systems', 
+    value: 10, 
+    suffix: '+', 
+    subtext: 'Web & Integrated Platforms',
+    icon: FolderGit2
+  },
+  { 
+    label: 'Technologies', 
+    value: 15, 
+    suffix: '+', 
+    subtext: 'React, Node, DBs & Tooling',
+    icon: Cpu
+  },
+  { 
+    label: 'Years Coding', 
+    value: 3, 
+    suffix: '+', 
+    subtext: 'Engineering Journey (2024–2026)',
+    icon: Calendar
+  },
+  { 
+    label: 'Systems Architected', 
+    value: 5, 
+    suffix: '+', 
+    subtext: 'Databases & Logic Engines',
+    icon: Network
+  },
 ];
 
 const corePillars = [
@@ -68,7 +92,7 @@ export default function About() {
             <span>About The Engineer</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Turning complex requirements into <span className="text-gradient-emerald">functional systems.</span>
+            Turning complex requirements into <span className="text-gradient-emerald">functional software.</span>
           </h2>
         </div>
 
@@ -125,6 +149,10 @@ export default function About() {
               My craft sits at the intersection of robust software architecture and intuitive frontend design. Rather than creating static landing pages, I focus on full-stack application development—connecting responsive React interfaces with Node.js/Express REST APIs, authentication pipelines, and optimized PostgreSQL/MySQL relational databases.
             </p>
 
+            <p className="text-sm sm:text-base text-slate-300">
+              My development journey spans a continuous progression: from mastering programming fundamentals and web applications in 2024, to engineering complex management systems with automated logic in 2025, and focusing on full-stack architecture, cloud databases, deployment, and capstone platforms like ABRAVENTURE in 2026.
+            </p>
+
             {/* Quoted Positioning Statement */}
             <div className="relative p-6 rounded-xl bg-gradient-to-r from-emerald-950/40 to-slate-900/60 border border-emerald-500/20 shadow-inner overflow-hidden my-6">
               <div className="absolute top-3 left-4 text-5xl font-serif text-emerald-500/20 leading-none select-none">"</div>
@@ -159,28 +187,44 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* Animated Statistics Grid */}
+        {/* Animated Statistics Grid Aligned with Portfolio */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-10 border-t border-white/10">
-          {stats.map((stat, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
-              className="p-6 rounded-xl bg-[#10141F]/80 border border-white/10 text-center hover:border-emerald-500/30 hover:shadow-xl hover:shadow-emerald-950/20 transition-all group"
-            >
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-mono group-hover:text-emerald-400 transition-colors mb-2">
-                <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-              </div>
-              <div className="text-sm font-bold text-slate-200 mb-1">
-                {stat.label}
-              </div>
-              <div className="text-xs font-mono text-slate-500">
-                {stat.subtext}
-              </div>
-            </motion.div>
-          ))}
+          {stats.map((stat, idx) => {
+            const StatIcon = stat.icon;
+
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                className="p-6 rounded-2xl bg-[#10141F] border border-white/10 hover:border-emerald-500/40 hover:shadow-xl hover:shadow-emerald-950/20 transition-all duration-300 group flex flex-col justify-between relative overflow-hidden"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all">
+                    <StatIcon className="w-4 h-4" />
+                  </div>
+                  <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest font-semibold">
+                    Verified
+                  </span>
+                </div>
+
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-mono group-hover:text-emerald-400 transition-colors mb-2">
+                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                </div>
+
+                <div>
+                  <div className="text-sm font-bold text-slate-100 group-hover:text-emerald-300 transition-colors mb-1">
+                    {stat.label}
+                  </div>
+                  <div className="text-xs font-mono text-slate-400">
+                    {stat.subtext}
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>

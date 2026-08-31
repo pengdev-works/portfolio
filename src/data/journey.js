@@ -2,36 +2,36 @@ export const journeyData = [
   {
     year: "2024",
     title: "Programming Fundamentals & Web Development",
-    subtitle: "Building the Core Foundation",
-    description: "Started developing web applications and mastering programming fundamentals. Focused on HTML, CSS, JavaScript ES6+, responsive layouts, git version control, and relational database basics.",
+    subtitle: "Core Foundation",
+    description: "Started developing web applications and learning programming fundamentals.",
     highlights: [
-      "Mastered core JavaScript DOM manipulation and asynchronous programming.",
-      "Built initial static and dynamic web interfaces with clean CSS flexbox/grid.",
-      "Learned SQL query formulation and database normalization concepts."
+      "Learned HTML5, CSS3, JavaScript ES6+, and core programming principles.",
+      "Built foundational web applications with interactive DOM manipulation and responsive layouts.",
+      "Studied computer science logic, Git version control, and SQL database basics."
     ],
     status: "Completed"
   },
   {
     year: "2025",
-    title: "Full-Stack Development & System Architecture",
-    subtitle: "Building Practical Management Systems",
-    description: "Built increasingly complex management systems and full-stack applications. Transitioned to React, Node.js, Express APIs, and relational databases like PostgreSQL & MySQL.",
+    title: "Full-Stack Applications & Systems",
+    subtitle: "Management Systems Development",
+    description: "Built increasingly complex management systems and full-stack applications.",
     highlights: [
-      "Engineered the Classroom Schedule Management System with real-time conflict detection.",
-      "Developed custom REST APIs in Express.js with JWT authentication and middleware.",
-      "Designed relational database schemas for institutional management applications."
+      "Architected full-stack web applications using React, Node.js, Express.js, and PostgreSQL/MySQL.",
+      "Engineered complex management systems including classroom schedule conflict detection engines.",
+      "Designed secure RESTful APIs, JWT authentication workflows, and normalized database schemas."
     ],
     status: "Completed"
   },
   {
     year: "2026",
-    title: "Advanced System Engineering & Capstone Project",
-    subtitle: "Deploying Integrated Digital Platforms",
-    description: "Focused on full-stack development, cloud databases, system architecture, performance optimization, and capstone deployment.",
+    title: "System Architecture & Capstone Platform",
+    subtitle: "Full-Stack & Cloud Deployment",
+    description: "Focused on full-stack development, system architecture, databases, deployment, and capstone projects.",
     highlights: [
-      "Architected ABRAVENTURE — Web-Based Integrated Tourism Information & Homestay Management System for Abra Province.",
-      "Integrated Neon cloud PostgreSQL databases, Leaflet GIS mapping, and administrative dashboards.",
-      "Deployed full-stack services to Vercel & Render with CI/CD GitHub workflows."
+      "Architected and deployed ABRAVENTURE — flagship capstone tourism & homestay system for Abra Province.",
+      "Optimized cloud PostgreSQL databases (Neon), GIS spatial mapping (Leaflet), and admin analytics dashboards.",
+      "Automated CI/CD deployment pipelines using Vercel, Render, and production-grade architecture."
     ],
     status: "Present / Active Focus"
   }

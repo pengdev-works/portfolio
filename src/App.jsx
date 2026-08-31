@@ -13,7 +13,6 @@ import GithubSection from './components/GithubSection';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
-// Section IDs in scroll order
 const SECTION_IDS = [
   'home', 'about', 'projects', 'skills',
   'journey', 'services', 'process', 'github', 'contact'
@@ -22,8 +21,35 @@ const SECTION_IDS = [
 export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [showScrollTop, setShowScrollTop] = useState(false);
+  
+  // Theme state management (default to dark mode)
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved;
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      return 'light';
+    }
+    return 'dark';
+  });
 
-  // ── Scroll Spy & Back-to-Top Visibility ──────────────────────────────────
+  // Apply theme class to <html> element
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else {
+      root.classList.remove('dark');
+      root.classList.add('light');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
+  };
+
+  // Scroll Spy & Back-to-Top Visibility
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
@@ -50,9 +76,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#090A0F] text-slate-200 antialiased overflow-x-hidden">
-      {/* Sticky Navigation */}
-      <Navbar activeSection={activeSection} />
+    <div className="min-h-screen bg-[#090A0F] text-slate-200 antialiased overflow-x-hidden transition-colors duration-300">
+      {/* Sticky Navigation with Theme Toggle */}
+      <Navbar activeSection={activeSection} theme={theme} toggleTheme={toggleTheme} />
 
       {/* Page Sections */}
       <main id="main-content">

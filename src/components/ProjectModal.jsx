@@ -36,7 +36,7 @@ export default function ProjectModal({ project, onClose }) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-4xl max-h-[90vh] bg-[#0D0F17] border border-emerald-500/30 rounded-2xl shadow-2xl shadow-emerald-950/40 overflow-y-auto z-10 font-sans"
+          className="modal-container relative w-full max-w-4xl max-h-[90vh] bg-[#0D0F17] border border-emerald-500/30 rounded-2xl shadow-2xl shadow-emerald-950/40 overflow-y-auto z-10 font-sans"
         >
           {/* Top Banner Image Header */}
           <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-slate-900 border-b border-white/10">
@@ -133,7 +133,7 @@ export default function ProjectModal({ project, onClose }) {
               
               {/* Problem */}
               <div className="p-5 rounded-xl bg-[#121522] border border-rose-500/20">
-                <h4 className="text-sm font-bold text-rose-300 mb-2 flex items-center gap-2">
+                <h4 className="text-sm font-bold text-rose-400 mb-2 flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 text-rose-400" />
                   <span>The Problem</span>
                 </h4>
@@ -144,7 +144,7 @@ export default function ProjectModal({ project, onClose }) {
 
               {/* Solution */}
               <div className="p-5 rounded-xl bg-[#121522] border border-emerald-500/20">
-                <h4 className="text-sm font-bold text-emerald-300 mb-2 flex items-center gap-2">
+                <h4 className="text-sm font-bold text-emerald-400 mb-2 flex items-center gap-2">
                   <Target className="w-4 h-4 text-emerald-400" />
                   <span>The Solution</span>
                 </h4>
@@ -210,7 +210,7 @@ export default function ProjectModal({ project, onClose }) {
             <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/30 flex items-start gap-3">
               <Award className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h5 className="text-xs font-mono font-bold text-emerald-300 uppercase tracking-wider mb-0.5">
+                <h5 className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider mb-0.5">
                   Achieved Outcome
                 </h5>
                 <p className="text-xs sm:text-sm text-slate-300">
