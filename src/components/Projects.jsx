@@ -1,225 +1,142 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  ExternalLink, Globe, ShieldCheck, MapPin,
-  LayoutDashboard, FileBarChart2, Users, CheckCircle
-} from 'lucide-react';
-import abraHero       from '../assets/images/abraventure-hero.png';
-import abraProvincial from '../assets/images/abraventure-provincial.png';
-import abraMunicipal  from '../assets/images/abraventure-municipal.png';
-import abraLogin      from '../assets/images/abraventure-login.png';
-import './Projects.css';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { projectsData } from '../data/projects';
+import ProjectCard from './ProjectCard';
+import ProjectModal from './ProjectModal';
+import { FolderGit2, Star, Filter } from 'lucide-react';
 
-const screens = [
-  {
-    id: 'main',
-    title: 'Main Tourism Portal',
-    subtitle: 'Public landing & interactive map',
-    img: abraHero,
-  },
-  {
-    id: 'provincial',
-    title: 'Provincial DOT Panel',
-    subtitle: 'Province-wide oversight & analytics',
-    img: abraProvincial,
-  },
-  {
-    id: 'municipal',
-    title: 'Municipal DOT Dashboard',
-    subtitle: 'Accreditation & local attractions',
-    img: abraMunicipal,
-  },
-  {
-    id: 'auth',
-    title: 'Auth & Security',
-    subtitle: 'Multi-role authentication portal',
-    img: abraLogin,
-  },
-];
+export default function Projects() {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [selectedProject, setSelectedProject] = useState(null);
 
-const highlights = [
-  {
-    icon: ShieldCheck,
-    text: 'Multi-Tier DOT Administration (Provincial & Municipal)',
-  },
-  {
-    icon: MapPin,
-    text: '27 Municipalities & 100+ Attractions Directory',
-  },
-  {
-    icon: LayoutDashboard,
-    text: 'Accreditation Verification & Approval Workflows',
-  },
-  {
-    icon: FileBarChart2,
-    text: 'Automated PDF & CSV Analytics Report Generation',
-  },
-  {
-    icon: Users,
-    text: 'Multi-Role Authentication (Admin, Provincial, Municipal)',
-  },
-];
+  const categories = ['All', 'Full-Stack Application', 'Management System', 'Web Application'];
 
-const tags = ['React', 'Node.js', 'Vercel', 'Tailwind CSS', 'Interactive Map', 'PostgreSQL'];
+  const filteredProjects = activeFilter === 'All'
+    ? projectsData
+    : projectsData.filter((p) => p.category === activeFilter);
 
-const Projects = () => {
-  const [activeTab, setActiveTab] = useState(0);
-  const [fading, setFading] = useState(false);
-  const sectionRef = useRef(null);
-
-  // Scroll reveal
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.reveal').forEach((el, i) => {
-              setTimeout(() => el.classList.add('active'), i * 120);
-            });
-          }
-        });
-      },
-      { threshold: 0.08 }
-    );
-    observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const handleTabChange = (idx) => {
-    if (idx === activeTab) return;
-    setFading(true);
-    setTimeout(() => {
-      setActiveTab(idx);
-      setFading(false);
-    }, 220);
-  };
+  const flagshipProject = projectsData.find((p) => p.id === 'abraventure');
 
   return (
-    <section id="projects" className="section-padding projects-section" ref={sectionRef}>
-      <div className="container">
-
-        {/* ── Section Header ── */}
-        <div className="projects-header">
-          <span className="section-eyebrow reveal">✦ Featured Case Study</span>
-          <h2 className="section-title reveal reveal-delay-1">AbraVenture Platform</h2>
-          <p className="projects-subtitle text-muted reveal reveal-delay-2">
-            An end-to-end provincial tourism management system built for the Province of Abra (CAR), Philippines.
+    <section id="projects" className="py-24 relative bg-[#090A0F] border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="flex flex-col items-center text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold uppercase tracking-wider mb-4">
+            <FolderGit2 className="w-3.5 h-3.5" />
+            <span>Featured Engineering Work</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+            Real systems built for <span className="text-gradient-emerald">real utility.</span>
+          </h2>
+          <p className="text-slate-300 text-base max-w-2xl">
+            From province-wide tourism ecosystems to automated institutional resource scheduling platforms.
           </p>
+
+          {/* Filter Categories */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-8 p-1.5 rounded-xl bg-[#10141F] border border-white/10">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveFilter(cat)}
+                className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                  activeFilter === cat
+                    ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* ── Flagship Card ── */}
-        <div className="flagship-card glass-panel reveal reveal-delay-2">
+        {/* Flagship Highlight Banner (If All or Full-Stack filter active) */}
+        {(activeFilter === 'All' || activeFilter === 'Full-Stack Application') && flagshipProject && (
+          <div className="mb-14">
+            <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#10141F] via-[#0D0F17] to-[#0A121A] border-2 border-emerald-500/40 shadow-2xl shadow-emerald-950/30 relative overflow-hidden">
+              
+              {/* Background Ambient Glow */}
+              <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-          {/* ── Top badge row ── */}
-          <div className="flagship-meta font-mono reveal reveal-delay-3">
-            <span className="project-index-badge">01</span>
-            <span className="flagship-badge">
-              <CheckCircle size={13} />
-              Flagship Enterprise Application
-            </span>
-            <span className="flagship-year text-muted">2024–2025</span>
-          </div>
-
-          {/* ── Main 2-column grid ── */}
-          <div className="flagship-grid">
-
-            {/* LEFT: Info */}
-            <div className="flagship-info">
-              <p className="flagship-subtitle-sm font-mono gradient-text-plasma">
-                Integrated Tourism & DOT Governance Portal
-              </p>
-
-              <p className="flagship-desc text-muted">
-                Built an enterprise provincial tourism management system for the Province of Abra (CAR).
-                Empowers provincial & municipal tourism officers to manage 27 municipalities,
-                verify accreditation for homestays & guides, and publish local events.
-              </p>
-
-              {/* Highlights */}
-              <ul className="flagship-highlights">
-                {highlights.map(({ icon: Icon, text }) => (
-                  <li key={text} className="highlight-item">
-                    <Icon size={16} className="highlight-icon" />
-                    <span>{text}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Tech Tags */}
-              <div className="project-tags">
-                {tags.map((tag) => (
-                  <span key={tag} className="project-tag font-mono">{tag}</span>
-                ))}
-              </div>
-
-              {/* CTA */}
-              <div className="flagship-actions">
-                <a
-                  href="https://abraventure2-0.vercel.app/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn-primary"
-                  id="abraventure-live-link"
-                >
-                  Visit Live Platform <ExternalLink size={16} />
-                </a>
-              </div>
-            </div>
-
-            {/* RIGHT: Browser Mockup */}
-            <div className="flagship-preview">
-              <div className="browser-mockup glass-panel">
-
-                {/* Browser chrome */}
-                <div className="browser-header">
-                  <div className="browser-dots" aria-hidden="true">
-                    <span className="dot dot-red" />
-                    <span className="dot dot-yellow" />
-                    <span className="dot dot-green" />
-                  </div>
-                  <div className="browser-address-bar font-mono">
-                    <Globe size={12} className="address-icon" aria-hidden="true" />
-                    <span>https://abraventure2-0.vercel.app/</span>
-                  </div>
-                </div>
-
-                {/* Screenshot */}
-                <div className="browser-content">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                {/* Left Preview Image */}
+                <div className="lg:col-span-6 rounded-xl overflow-hidden border border-white/10 shadow-lg relative group h-64 sm:h-80">
                   <img
-                    src={screens[activeTab].img}
-                    alt={screens[activeTab].title}
-                    className={`preview-img ${fading ? 'preview-fading' : ''}`}
-                    key={activeTab}
+                    src={flagshipProject.image}
+                    alt={flagshipProject.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="preview-caption">
-                    <span className="caption-title">{screens[activeTab].title}</span>
-                    <span className="caption-sub font-mono">{screens[activeTab].subtitle}</span>
+                  <div className="absolute top-3 left-3">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500 text-slate-950 font-bold text-xs shadow-md">
+                      <Star className="w-3.5 h-3.5 fill-slate-950" />
+                      <span>FLAGSHIP SYSTEM</span>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right Details */}
+                <div className="lg:col-span-6 space-y-4">
+                  <div className="text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider">
+                    Province of Abra Tourism Ecosystem
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+                    {flagshipProject.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-emerald-300 font-mono font-medium">
+                    {flagshipProject.subtitle}
+                  </p>
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    {flagshipProject.tagline} Features Leaflet GIS mapping, homestay reservation handling, and municipal tourism officer management portals.
+                  </p>
+
+                  <div className="flex flex-wrap gap-1.5 py-2">
+                    {flagshipProject.technologies.map((t, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-xs font-mono text-slate-200"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="pt-2 flex flex-wrap items-center gap-4">
+                    <button
+                      onClick={() => setSelectedProject(flagshipProject)}
+                      className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition-all shadow-md shadow-emerald-500/20"
+                    >
+                      Explore System Specs & Modal
+                    </button>
                   </div>
                 </div>
               </div>
 
-              {/* Screen tabs */}
-              <div className="screen-tabs font-mono" role="tablist">
-                {screens.map((screen, idx) => (
-                  <button
-                    key={screen.id}
-                    role="tab"
-                    aria-selected={activeTab === idx}
-                    className={`screen-tab ${activeTab === idx ? 'active' : ''}`}
-                    onClick={() => handleTabChange(idx)}
-                    id={`tab-${screen.id}`}
-                  >
-                    <span className="tab-num">{String(idx + 1).padStart(2, '0')}</span>
-                    <span className="tab-title">{screen.title}</span>
-                  </button>
-                ))}
-              </div>
             </div>
           </div>
+        )}
+
+        {/* Project Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {filteredProjects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onSelect={(proj) => setSelectedProject(proj)}
+            />
+          ))}
         </div>
+
       </div>
+
+      {/* Project Detail Modal */}
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+      )}
     </section>
   );
-};
-
-export default Projects;
+}
