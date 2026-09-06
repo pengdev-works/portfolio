@@ -1,131 +1,220 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { skillsData } from '../data/skills';
-import { 
-  Code2, FileCode2, Palette, Layout, Sparkles, Server, Cpu, Network, 
-  Database, Cloud, HardDrive, GitBranch, Github, Zap, Globe, Layers 
-} from 'lucide-react';
-
-const iconMap = {
-  Code2, FileCode2, Palette, Layout, Sparkles, Server, Cpu, Network,
-  Database, Cloud, HardDrive, GitBranch, Github, Zap, Globe, Layers
-};
+import { TechIcon } from './TechIcons';
+import { Cpu, Sparkles } from 'lucide-react';
 
 export default function Skills() {
   const [activeCategory, setActiveCategory] = useState('All');
 
+  // Flatten all skills with category info attached
+  const allSkills = skillsData.flatMap((group) =>
+    group.skills.map((skill) => ({
+      ...skill,
+      category: group.category
+    }))
+  );
+
   const categories = ['All', ...skillsData.map((s) => s.category)];
 
-  const filteredData = activeCategory === 'All' 
-    ? skillsData 
-    : skillsData.filter((s) => s.category === activeCategory);
+  // Filter skills when a specific category is selected
+  const isFiltered = activeCategory !== 'All';
+  const filteredSkills = isFiltered
+    ? allSkills.filter((s) => s.category === activeCategory)
+    : allSkills;
+
+  // Split into two balanced rows for sideways drift when showing "All"
+  const row1 = allSkills.slice(0, 8); // Frontend & Tools
+  const row2 = allSkills.slice(8);    // Backend & Databases
+
+  // Duplicate each row for seamless 50% infinite loop
+  const marqueeRow1 = [...row1, ...row1];
+  const marqueeRow2 = [...row2, ...row2];
 
   return (
-    <section id="skills" className="py-24 relative bg-noise bg-[#090A0F] border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="skills" className="py-24 relative bg-[#090A0F] border-t border-white/5 overflow-hidden">
+      
+      {/* Background Subtle Ambient Glows */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-12">
+        <div className="flex flex-col items-center text-center mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold uppercase tracking-wider mb-4">
             <Cpu className="w-3.5 h-3.5" />
-            <span>Tech Stack & Capabilities</span>
+            <span>Tech Stack & Tools</span>
           </div>
+
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
             Technologies I build with <span className="text-gradient-emerald">every day.</span>
           </h2>
-          <p className="text-slate-400 text-base max-w-2xl">
-            Strictly practical tools, backend frameworks, databases, and deployment services I actively use in production-ready projects.
+
+          <p className="text-slate-400 text-sm sm:text-base max-w-2xl">
+            Practical tools, backend frameworks, databases, and deployment platforms I actively use across my projects.
           </p>
 
-          {/* Category Selector Tabs */}
+          {/* Category Tabs */}
           <div className="flex flex-wrap items-center justify-center gap-2 mt-8 p-1.5 rounded-xl bg-[#10141F] border border-white/10">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                  activeCategory === cat
-                    ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                    isActive
+                      ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20'
+                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Skills Categories Grid */}
-        <div className="space-y-12">
-          {filteredData.map((catGroup, groupIdx) => (
-            <div key={groupIdx} className="space-y-4">
-              <div className="flex items-center gap-3 pb-2 border-b border-white/10">
-                <h3 className="text-lg font-bold text-white font-mono tracking-tight">
-                  // {catGroup.category}
-                </h3>
-                <span className="text-xs text-slate-400 font-normal">
-                  — {catGroup.description}
-                </span>
-              </div>
-
-              {/* Grid of Skill Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {catGroup.skills.map((skill, skillIdx) => {
-                  const IconComponent = iconMap[skill.icon] || Code2;
+        {/* ── Mode 1: All Categories (Floating & Sideways Drift) ── */}
+        {!isFiltered ? (
+          <div className="space-y-6 my-4">
+            
+            {/* Lane 1: Drifting Left */}
+            <div className="relative mask-edges-fade overflow-hidden py-3 group">
+              <div className="animate-drift-left group-hover-pause flex gap-5 items-center">
+                {marqueeRow1.map((skill, idx) => {
                   const isGold = skill.accent === 'gold';
+                  const floatDelay = (idx % 8) * 0.4;
+                  const isAlt = idx % 2 === 1;
 
                   return (
-                    <motion.div
-                      key={skillIdx}
-                      initial={{ opacity: 0, y: 15 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.3, delay: skillIdx * 0.05 }}
-                      whileHover={{ y: -4 }}
-                      className={`group p-5 rounded-xl bg-[#10141F] border transition-all duration-300 relative overflow-hidden ${
-                        isGold
-                          ? 'border-white/10 hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/10'
-                          : 'border-white/10 hover:border-emerald-500/40 hover:shadow-lg hover:shadow-emerald-500/10'
-                      }`}
+                    <div
+                      key={`lane1-${idx}`}
+                      style={{ animationDelay: `${floatDelay}s` }}
+                      className={isAlt ? 'animate-float-b' : 'animate-float-a'}
                     >
-                      {/* Top Bar inside card */}
-                      <div className="flex items-center justify-between mb-3">
-                        <div
-                          className={`p-2.5 rounded-lg border transition-all duration-300 ${
-                            isGold
-                              ? 'bg-amber-500/10 text-amber-400 border-amber-500/20 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-slate-950'
-                              : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950'
-                          }`}
-                        >
-                          <IconComponent className="w-5 h-5" />
+                      <div className="group/icon relative flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-[#10141F] border border-white/10 hover:border-emerald-400/50 hover:bg-[#141926] hover:-translate-y-2 hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 cursor-pointer whitespace-nowrap">
+                        
+                        {/* Authentic Tech Vector Icon */}
+                        <div className="w-8 h-8 flex items-center justify-center shrink-0 group-hover/icon:scale-110 transition-transform duration-300">
+                          <TechIcon name={skill.name} className="w-7 h-7" />
                         </div>
-                        <span
-                          className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded border uppercase tracking-wider ${
-                            isGold
-                              ? 'bg-amber-500/10 text-amber-300 border-amber-500/20'
-                              : 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20'
-                          }`}
-                        >
+
+                        {/* Tech Label & Level */}
+                        <div className="flex flex-col">
+                          <span className="text-sm font-bold text-white group-hover/icon:text-emerald-300 transition-colors">
+                            {skill.name}
+                          </span>
+                          <span className="text-[10px] font-mono text-slate-400">
+                            {skill.category}
+                          </span>
+                        </div>
+
+                        {/* Floating Proficiency Tooltip on Hover */}
+                        <div className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-slate-900 border border-emerald-500/30 text-[10px] font-mono font-semibold text-emerald-300 opacity-0 pointer-events-none group-hover/icon:opacity-100 -translate-y-1 group-hover/icon:translate-y-0 transition-all duration-200 shadow-lg whitespace-nowrap z-20">
                           {skill.level}
-                        </span>
+                        </div>
+
                       </div>
-
-                      {/* Tech Name */}
-                      <h4 className="text-base font-bold text-white group-hover:text-emerald-300 transition-colors mb-1">
-                        {skill.name}
-                      </h4>
-
-                      {/* Description */}
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        {skill.description}
-                      </p>
-                    </motion.div>
+                    </div>
                   );
                 })}
               </div>
             </div>
-          ))}
-        </div>
+
+            {/* Lane 2: Drifting Right */}
+            <div className="relative mask-edges-fade overflow-hidden py-3 group">
+              <div className="animate-drift-right group-hover-pause flex gap-5 items-center">
+                {marqueeRow2.map((skill, idx) => {
+                  const isGold = skill.accent === 'gold';
+                  const floatDelay = (idx % 8) * 0.45;
+                  const isAlt = idx % 2 === 0;
+
+                  return (
+                    <div
+                      key={`lane2-${idx}`}
+                      style={{ animationDelay: `${floatDelay}s` }}
+                      className={isAlt ? 'animate-float-b' : 'animate-float-a'}
+                    >
+                      <div className="group/icon relative flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-[#10141F] border border-white/10 hover:border-emerald-400/50 hover:bg-[#141926] hover:-translate-y-2 hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 cursor-pointer whitespace-nowrap">
+                        
+                        {/* Authentic Tech Vector Icon */}
+                        <div className="w-8 h-8 flex items-center justify-center shrink-0 group-hover/icon:scale-110 transition-transform duration-300">
+                          <TechIcon name={skill.name} className="w-7 h-7" />
+                        </div>
+
+                        {/* Tech Label & Level */}
+                        <div className="flex flex-col">
+                          <span className="text-sm font-bold text-white group-hover/icon:text-emerald-300 transition-colors">
+                            {skill.name}
+                          </span>
+                          <span className="text-[10px] font-mono text-slate-400">
+                            {skill.category}
+                          </span>
+                        </div>
+
+                        {/* Floating Proficiency Tooltip on Hover */}
+                        <div className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-slate-900 border border-emerald-500/30 text-[10px] font-mono font-semibold text-emerald-300 opacity-0 pointer-events-none group-hover/icon:opacity-100 -translate-y-1 group-hover/icon:translate-y-0 transition-all duration-200 shadow-lg whitespace-nowrap z-20">
+                          {skill.level}
+                        </div>
+
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Subtle Hint */}
+            <div className="flex items-center justify-center gap-2 text-xs text-slate-500 font-mono pt-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>Hover any floating icon to pause sideways glide & inspect</span>
+            </div>
+
+          </div>
+        ) : (
+          /* ── Mode 2: Filtered Category (Floating Flex Cloud) ── */
+          <div className="my-8 max-w-4xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-5">
+              {filteredSkills.map((skill, idx) => {
+                const floatDelay = (idx % 6) * 0.35;
+                const isAlt = idx % 2 === 1;
+
+                return (
+                  <motion.div
+                    key={skill.name}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.25, delay: idx * 0.05 }}
+                    style={{ animationDelay: `${floatDelay}s` }}
+                    className={isAlt ? 'animate-float-b' : 'animate-float-a'}
+                  >
+                    <div className="group/icon relative flex items-center gap-3.5 px-6 py-4 rounded-2xl bg-[#10141F] border border-white/10 hover:border-emerald-400/50 hover:bg-[#141926] hover:-translate-y-2 hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/15 transition-all duration-300 cursor-pointer">
+                      
+                      <div className="w-9 h-9 flex items-center justify-center shrink-0 group-hover/icon:scale-110 transition-transform duration-300">
+                        <TechIcon name={skill.name} className="w-8 h-8" />
+                      </div>
+
+                      <div className="flex flex-col pr-1">
+                        <span className="text-base font-bold text-white group-hover/icon:text-emerald-300 transition-colors">
+                          {skill.name}
+                        </span>
+                        <span className="text-xs font-mono text-emerald-400">
+                          {skill.level}
+                        </span>
+                      </div>
+
+                      {/* Tooltip description */}
+                      <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md bg-slate-900 border border-emerald-500/30 text-xs font-mono font-semibold text-emerald-300 opacity-0 pointer-events-none group-hover/icon:opacity-100 -translate-y-1 group-hover/icon:translate-y-0 transition-all duration-200 shadow-xl whitespace-nowrap z-20">
+                        {skill.level} Proficiency
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
       </div>
     </section>

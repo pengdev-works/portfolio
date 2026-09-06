@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Terminal, Copy, Check, FileCode, Server, ExternalLink, ShieldCheck, MapPin, Code2 } from 'lucide-react';
-import profileImg from '../assets/images/profile.jpg';
+import profileImg from '../assets/images/profile-nobg.png';
 import abraHero from '../assets/images/abraventure-hero.png';
 
 const tabs = [
@@ -73,14 +73,14 @@ export default function HeroTerminal() {
       <div className="p-4 sm:p-5 bg-gradient-to-r from-[#121522] via-[#0F121D] to-[#141926] border-b border-white/10 relative overflow-hidden">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            {/* Real Avatar */}
-            <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-emerald-500/50 shadow-md flex-shrink-0">
+            {/* Real Avatar - transparent PNG blends into card bg */}
+            <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-emerald-500/30 shadow-lg flex-shrink-0 avatar-card-bg">
               <img
                 src={profileImg}
                 alt="Jhon Christopher Paragas"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-top scale-[1.15] translate-y-0.5 avatar-profile-img"
               />
-              <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0D0F17]" />
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0D0F17] dark:border-[#0D0F17]" />
             </div>
 
             <div>
@@ -198,12 +198,9 @@ export default function HeroTerminal() {
       </div>
 
       {/* Terminal Footer Indicator */}
-      <div className="px-4 py-2 bg-[#090A0F] border-t border-white/5 flex items-center justify-between text-xs text-slate-400 font-mono">
-        <div className="flex items-center gap-2">
-          <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>React 19 · Node.js · PostgreSQL</span>
-        </div>
-        <span className="text-slate-500 hidden sm:inline">Verified Proof</span>
+      <div className="px-4 py-2 bg-[#090A0F] border-t border-white/5 flex items-center gap-2 text-xs text-slate-400 font-mono">
+        <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        <span>React 19 · Node.js · PostgreSQL</span>
       </div>
 
     </div>

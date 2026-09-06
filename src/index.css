@@ -261,3 +261,125 @@ img {
   -webkit-user-drag: none;
   user-select: none;
 }
+
+/* Subtle Natural Floating & Sideways Drift for Tech Icons */
+@keyframes sideways-drift-left {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes sideways-drift-right {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes natural-float-a {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes natural-float-b {
+  0%, 100% {
+    transform: translateY(-6px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+.animate-drift-left {
+  display: flex;
+  width: max-content;
+  animation: sideways-drift-left 36s linear infinite;
+  will-change: transform;
+}
+
+.animate-drift-right {
+  display: flex;
+  width: max-content;
+  animation: sideways-drift-right 36s linear infinite;
+  will-change: transform;
+}
+
+.animate-float-a {
+  animation: natural-float-a 4.5s ease-in-out infinite;
+}
+
+.animate-float-b {
+  animation: natural-float-b 5.2s ease-in-out infinite;
+}
+
+.group:hover .group-hover-pause {
+  animation-play-state: paused !important;
+}
+
+.mask-edges-fade {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+/* ── Hero Profile Photo (large, right-side display) ── */
+
+/* The PNG already has no background — just ensure it blends naturally */
+
+/* DARK MODE: photo sits directly on dark bg, naturally transparent */
+.dark .hero-profile-photo {
+  filter: contrast(1.04) brightness(1.02);
+}
+
+/* LIGHT MODE: PNG already transparent — no blend mode needed */
+html:not(.dark) .hero-profile-photo {
+  filter: contrast(1.06) brightness(0.98) saturate(1.04);
+}
+
+/* Bottom-fade mask — makes the photo softly dissolve into the section bg */
+.hero-profile-photo {
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, black 20%);
+  mask-image: linear-gradient(to top, transparent 0%, black 20%);
+}
+
+/* Subtle pulsing rings */
+@keyframes ring-pulse {
+  0%, 100% { opacity: 0.08; transform: translate(-50%, -50%) scale(1); }
+  50%       { opacity: 0.18; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+.hero-photo-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring-pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero-photo-ring-2 {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring-pulse 4s ease-in-out infinite reverse;
+  animation-delay: 2s;
+  pointer-events: none;
+}
+
+/* ── Avatar in HeroTerminal (kept for reference if re-enabled) ── */
+.dark .avatar-card-bg {
+  background: linear-gradient(135deg, #121522 0%, #0F121D 100%);
+}
+.avatar-profile-img { display: block; }
+html:not(.dark) .avatar-card-bg {
+  background: #f1f5f9;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.12);
+}

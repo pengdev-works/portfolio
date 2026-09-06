@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
+import Preloader from './components/Preloader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -19,6 +20,7 @@ const SECTION_IDS = [
 ];
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('home');
   const [showScrollTop, setShowScrollTop] = useState(false);
   
@@ -31,6 +33,30 @@ export default function App() {
     }
     return 'dark';
   });
+
+  // Prevent automatic browser scroll jumping on reload / restart
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    // Clean hash on fresh load if not navigating to a specific section
+    if (!window.location.hash || window.location.hash === '#home') {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
+  // Lock body scroll while initial preloader is active
+  useEffect(() => {
+    if (isLoading) {
+      document.body.style.overflow = 'hidden';
+      window.scrollTo(0, 0);
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isLoading]);
 
   // Apply theme class to <html> element
   useEffect(() => {
@@ -77,6 +103,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#090A0F] text-slate-200 antialiased overflow-x-hidden transition-colors duration-300">
+      
+      {/* Initial Bootloader / Preloader Screen */}
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <Preloader key="app-preloader" onComplete={() => setIsLoading(false)} />
+        )}
+      </AnimatePresence>
+
       {/* Sticky Navigation with Theme Toggle */}
       <Navbar activeSection={activeSection} theme={theme} toggleTheme={toggleTheme} />
 
