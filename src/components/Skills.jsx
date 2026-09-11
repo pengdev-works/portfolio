@@ -1,222 +1,144 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useRef, useState } from 'react';
 import { skillsData } from '../data/skills';
-import { TechIcon } from './TechIcons';
-import { Cpu, Sparkles } from 'lucide-react';
 
 export default function Skills() {
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [mouseShift, setMouseShift] = useState(0);
+  const marqueeContainerRef = useRef(null);
 
-  // Flatten all skills with category info attached
+  // Extract ONLY the exact skills from skillsData
   const allSkills = skillsData.flatMap((group) =>
     group.skills.map((skill) => ({
-      ...skill,
-      category: group.category
+      name: skill.name.toUpperCase(),
+      originalName: skill.name,
+      level: skill.level,
+      category: group.category,
+      description: skill.description
     }))
   );
 
-  const categories = ['All', ...skillsData.map((s) => s.category)];
+  // Split the user's 16 skills into two balanced 8-skill rows
+  const midpoint = Math.ceil(allSkills.length / 2);
+  const row1Skills = allSkills.slice(0, midpoint);
+  const row2Skills = allSkills.slice(midpoint);
 
-  // Filter skills when a specific category is selected
-  const isFiltered = activeCategory !== 'All';
-  const filteredSkills = isFiltered
-    ? allSkills.filter((s) => s.category === activeCategory)
-    : allSkills;
+  // Duplicate for seamless 50% infinite marquee loop
+  const infiniteRow1 = [...row1Skills, ...row1Skills];
+  const infiniteRow2 = [...row2Skills, ...row2Skills];
 
-  // Split into two balanced rows for sideways drift when showing "All"
-  const row1 = allSkills.slice(0, 8); // Frontend & Tools
-  const row2 = allSkills.slice(8);    // Backend & Databases
+  // Interactive mouse move: hovering left and right dynamically shifts the perspective
+  const handleMouseMove = (e) => {
+    if (!marqueeContainerRef.current) return;
+    const rect = marqueeContainerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percent = (x / rect.width - 0.5) * 2; // -1 to 1
+    setMouseShift(percent * 35); // Smooth shift up to 35px
+  };
 
-  // Duplicate each row for seamless 50% infinite loop
-  const marqueeRow1 = [...row1, ...row1];
-  const marqueeRow2 = [...row2, ...row2];
+  const handleMouseLeave = () => {
+    setMouseShift(0);
+  };
 
   return (
-    <section id="skills" className="py-24 relative bg-[#090A0F] border-t border-white/5 overflow-hidden">
+    <section id="skills" className="py-24 sm:py-32 relative bg-[#090A0F] border-t border-white/5 overflow-hidden">
       
-      {/* Background Subtle Ambient Glows */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
+      {/* Ambient background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-emerald-500/[0.04] blur-[140px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-8 sm:mb-12">
         
-        {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold uppercase tracking-wider mb-4">
-            <Cpu className="w-3.5 h-3.5" />
-            <span>Tech Stack & Tools</span>
+        {/* Brutalist Section Header Label */}
+        <div className="flex items-center justify-between pb-4 border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-xs sm:text-sm text-emerald-400 font-semibold tracking-[0.25em] uppercase">
+              04 — TECHNICAL ARSENAL
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
-            Technologies I build with <span className="text-gradient-emerald">every day.</span>
-          </h2>
-
-          <p className="text-slate-400 text-sm sm:text-base max-w-2xl">
-            Practical tools, backend frameworks, databases, and deployment platforms I actively use across my projects.
-          </p>
-
-          {/* Category Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-8 p-1.5 rounded-xl bg-[#10141F] border border-white/10">
-            {categories.map((cat) => {
-              const isActive = activeCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                    isActive
-                      ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
+          <div className="flex items-center gap-2 text-[11px] font-mono text-slate-500 uppercase tracking-widest">
+            <span>[ HOVER TO INSPECT ]</span>
           </div>
         </div>
 
-        {/* ── Mode 1: All Categories (Floating & Sideways Drift) ── */}
-        {!isFiltered ? (
-          <div className="space-y-6 my-4">
-            
-            {/* Lane 1: Drifting Left */}
-            <div className="relative mask-edges-fade overflow-hidden py-3 group">
-              <div className="animate-drift-left group-hover-pause flex gap-5 items-center">
-                {marqueeRow1.map((skill, idx) => {
-                  const isGold = skill.accent === 'gold';
-                  const floatDelay = (idx % 8) * 0.4;
-                  const isAlt = idx % 2 === 1;
+      </div>
 
-                  return (
-                    <div
-                      key={`lane1-${idx}`}
-                      style={{ animationDelay: `${floatDelay}s` }}
-                      className={isAlt ? 'animate-float-b' : 'animate-float-a'}
-                    >
-                      <div className="group/icon relative flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-[#10141F] border border-white/10 hover:border-emerald-400/50 hover:bg-[#141926] hover:-translate-y-2 hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 cursor-pointer whitespace-nowrap">
-                        
-                        {/* Authentic Tech Vector Icon */}
-                        <div className="w-8 h-8 flex items-center justify-center shrink-0 group-hover/icon:scale-110 transition-transform duration-300">
-                          <TechIcon name={skill.name} className="w-7 h-7" />
-                        </div>
+      {/* ─────────────────────────────────────────────────────────────
+          BRUTALIST VOID DUAL-ROW INFINITE MARQUEE
+          Row 1 moves Left, Row 2 moves Right
+          Interactive left-and-right hover responsiveness
+          Outlined editorial typography that fills solid on hover
+      ───────────────────────────────────────────────────────────── */}
+      <div 
+        ref={marqueeContainerRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          transform: `translateX(${mouseShift}px)`,
+          transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
+        }}
+        className="w-full relative py-4 sm:py-8 overflow-hidden mask-edges-fade group select-none cursor-default"
+      >
+        
+        {/* Lane 1: Drifting Left */}
+        <div className="py-2 sm:py-4 overflow-hidden flex items-center">
+          <div className="animate-drift-left group-hover-pause flex items-center whitespace-nowrap">
+            {infiniteRow1.map((skill, idx) => (
+              <div
+                key={`lane1-${skill.name}-${idx}`}
+                className="group/word relative inline-flex items-center cursor-pointer transition-transform duration-300 hover:scale-105"
+              >
+                {/* Outlined Brutalist Serif Word */}
+                <span className="font-editorial-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight text-stroke-brutalist transition-all duration-300 px-3 sm:px-5">
+                  {skill.name}
+                </span>
 
-                        {/* Tech Label & Level */}
-                        <div className="flex flex-col">
-                          <span className="text-sm font-bold text-white group-hover/icon:text-emerald-300 transition-colors">
-                            {skill.name}
-                          </span>
-                          <span className="text-[10px] font-mono text-slate-400">
-                            {skill.category}
-                          </span>
-                        </div>
+                {/* Bullet separator */}
+                <span className="text-white/20 dark:text-white/20 text-2xl sm:text-4xl md:text-5xl mx-4 sm:mx-8 select-none transition-colors duration-300 group-hover/word:text-emerald-400">
+                  •
+                </span>
 
-                        {/* Floating Proficiency Tooltip on Hover */}
-                        <div className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-slate-900 border border-emerald-500/30 text-[10px] font-mono font-semibold text-emerald-300 opacity-0 pointer-events-none group-hover/icon:opacity-100 -translate-y-1 group-hover/icon:translate-y-0 transition-all duration-200 shadow-lg whitespace-nowrap z-20">
-                          {skill.level}
-                        </div>
-
-                      </div>
-                    </div>
-                  );
-                })}
+                {/* Floating Micro-Badge on Hover */}
+                <div className="absolute -top-9 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md bg-slate-900/95 border border-emerald-500/40 text-[10px] sm:text-xs font-mono uppercase tracking-wider text-emerald-300 opacity-0 pointer-events-none group-hover/word:opacity-100 transition-all duration-200 shadow-xl whitespace-nowrap z-30 flex items-center gap-2">
+                  <span>{skill.category}</span>
+                  <span className="text-slate-500">•</span>
+                  <span className="text-white font-semibold">{skill.level}</span>
+                </div>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
 
-            {/* Lane 2: Drifting Right */}
-            <div className="relative mask-edges-fade overflow-hidden py-3 group">
-              <div className="animate-drift-right group-hover-pause flex gap-5 items-center">
-                {marqueeRow2.map((skill, idx) => {
-                  const isGold = skill.accent === 'gold';
-                  const floatDelay = (idx % 8) * 0.45;
-                  const isAlt = idx % 2 === 0;
+        {/* Lane 2: Drifting Right */}
+        <div className="py-2 sm:py-4 overflow-hidden flex items-center">
+          <div className="animate-drift-right group-hover-pause flex items-center whitespace-nowrap">
+            {infiniteRow2.map((skill, idx) => (
+              <div
+                key={`lane2-${skill.name}-${idx}`}
+                className="group/word relative inline-flex items-center cursor-pointer transition-transform duration-300 hover:scale-105"
+              >
+                {/* Outlined Brutalist Serif Word */}
+                <span className="font-editorial-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight text-stroke-brutalist transition-all duration-300 px-3 sm:px-5">
+                  {skill.name}
+                </span>
 
-                  return (
-                    <div
-                      key={`lane2-${idx}`}
-                      style={{ animationDelay: `${floatDelay}s` }}
-                      className={isAlt ? 'animate-float-b' : 'animate-float-a'}
-                    >
-                      <div className="group/icon relative flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-[#10141F] border border-white/10 hover:border-emerald-400/50 hover:bg-[#141926] hover:-translate-y-2 hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 cursor-pointer whitespace-nowrap">
-                        
-                        {/* Authentic Tech Vector Icon */}
-                        <div className="w-8 h-8 flex items-center justify-center shrink-0 group-hover/icon:scale-110 transition-transform duration-300">
-                          <TechIcon name={skill.name} className="w-7 h-7" />
-                        </div>
+                {/* Bullet separator */}
+                <span className="text-white/20 dark:text-white/20 text-2xl sm:text-4xl md:text-5xl mx-4 sm:mx-8 select-none transition-colors duration-300 group-hover/word:text-emerald-400">
+                  •
+                </span>
 
-                        {/* Tech Label & Level */}
-                        <div className="flex flex-col">
-                          <span className="text-sm font-bold text-white group-hover/icon:text-emerald-300 transition-colors">
-                            {skill.name}
-                          </span>
-                          <span className="text-[10px] font-mono text-slate-400">
-                            {skill.category}
-                          </span>
-                        </div>
-
-                        {/* Floating Proficiency Tooltip on Hover */}
-                        <div className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-slate-900 border border-emerald-500/30 text-[10px] font-mono font-semibold text-emerald-300 opacity-0 pointer-events-none group-hover/icon:opacity-100 -translate-y-1 group-hover/icon:translate-y-0 transition-all duration-200 shadow-lg whitespace-nowrap z-20">
-                          {skill.level}
-                        </div>
-
-                      </div>
-                    </div>
-                  );
-                })}
+                {/* Floating Micro-Badge on Hover */}
+                <div className="absolute -top-9 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md bg-slate-900/95 border border-emerald-500/40 text-[10px] sm:text-xs font-mono uppercase tracking-wider text-emerald-300 opacity-0 pointer-events-none group-hover/word:opacity-100 transition-all duration-200 shadow-xl whitespace-nowrap z-30 flex items-center gap-2">
+                  <span>{skill.category}</span>
+                  <span className="text-slate-500">•</span>
+                  <span className="text-white font-semibold">{skill.level}</span>
+                </div>
               </div>
-            </div>
-
-            {/* Subtle Hint */}
-            <div className="flex items-center justify-center gap-2 text-xs text-slate-500 font-mono pt-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              <span>Hover any floating icon to pause sideways glide & inspect</span>
-            </div>
-
+            ))}
           </div>
-        ) : (
-          /* ── Mode 2: Filtered Category (Floating Flex Cloud) ── */
-          <div className="my-8 max-w-4xl mx-auto">
-            <div className="flex flex-wrap items-center justify-center gap-5">
-              {filteredSkills.map((skill, idx) => {
-                const floatDelay = (idx % 6) * 0.35;
-                const isAlt = idx % 2 === 1;
-
-                return (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.25, delay: idx * 0.05 }}
-                    style={{ animationDelay: `${floatDelay}s` }}
-                    className={isAlt ? 'animate-float-b' : 'animate-float-a'}
-                  >
-                    <div className="group/icon relative flex items-center gap-3.5 px-6 py-4 rounded-2xl bg-[#10141F] border border-white/10 hover:border-emerald-400/50 hover:bg-[#141926] hover:-translate-y-2 hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/15 transition-all duration-300 cursor-pointer">
-                      
-                      <div className="w-9 h-9 flex items-center justify-center shrink-0 group-hover/icon:scale-110 transition-transform duration-300">
-                        <TechIcon name={skill.name} className="w-8 h-8" />
-                      </div>
-
-                      <div className="flex flex-col pr-1">
-                        <span className="text-base font-bold text-white group-hover/icon:text-emerald-300 transition-colors">
-                          {skill.name}
-                        </span>
-                        <span className="text-xs font-mono text-emerald-400">
-                          {skill.level}
-                        </span>
-                      </div>
-
-                      {/* Tooltip description */}
-                      <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md bg-slate-900 border border-emerald-500/30 text-xs font-mono font-semibold text-emerald-300 opacity-0 pointer-events-none group-hover/icon:opacity-100 -translate-y-1 group-hover/icon:translate-y-0 transition-all duration-200 shadow-xl whitespace-nowrap z-20">
-                        {skill.level} Proficiency
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        </div>
 
       </div>
+
     </section>
   );
 }

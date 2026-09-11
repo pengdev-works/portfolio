@@ -330,6 +330,53 @@ img {
   -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
 
+/* Brutalist Void Technical Arsenal Outlined Typography */
+.font-editorial-serif {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.text-stroke-brutalist {
+  color: transparent;
+  -webkit-text-stroke: 1.25px rgba(255, 255, 255, 0.32);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, color, -webkit-text-stroke;
+}
+
+.text-stroke-brutalist:hover {
+  color: #ffffff;
+  -webkit-text-stroke: 1.25px #ffffff;
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.6), 0 0 70px rgba(16, 185, 129, 0.4);
+}
+
+html:not(.dark) .text-stroke-brutalist {
+  color: transparent;
+  -webkit-text-stroke: 1.25px rgba(15, 23, 42, 0.32);
+}
+
+html:not(.dark) .text-stroke-brutalist:hover {
+  color: #0f172a;
+  -webkit-text-stroke: 1.25px #0f172a;
+  text-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+}
+
+.animate-drift-left-fast {
+  display: flex;
+  width: max-content;
+  animation: sideways-drift-left 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-drift-right-fast {
+  display: flex;
+  width: max-content;
+  animation: sideways-drift-right 32s linear infinite;
+  will-change: transform;
+}
+
 /* ── Hero Profile Photo (large, right-side display) ── */
 
 /* The PNG already has no background — just ensure it blends naturally */
